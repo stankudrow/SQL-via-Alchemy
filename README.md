@@ -1,2 +1,3 @@
 # SQL-via-Alchemy
-Изучение языка SQL посредством SQLAlchemy
+
+Learning SQL via SQLAlchemy.
