@@ -1,8 +1,9 @@
 """SQL via SQLAlchemy.
 
-The module with basic examples of using SQLAlchemy.
+The module with basic examples of using SQLAlchemy in asyncio code.
+The docstring format is written according to the NumPy docstyle.
 
-The docstring format is according to the NumPy docstyle.
+Read the program and its output carefully.
 """
 
 
@@ -23,7 +24,7 @@ if SQLALCHEMY_VERSION < (2, 0, 0):
 def get_sqlite_engine(
     dbfile: pathlib.Path | str | None = None,
 ) -> async_sqla.AsyncEngine:
-    """Returns the SQLite via aiosqlite DBAPI sqlalchemy.Engine object.
+    """Returns the SQLite via aiosqlite DBAPI `sqlalchemy.Engine` object.
 
     The engine is typically a global object created
     just once for a particular database server,
@@ -41,6 +42,7 @@ def get_sqlite_engine(
 
     References
     ----------
+    https://docs.sqlalchemy.org/en/20/tutorial/dbapi_transactions.html
     https://docs.sqlalchemy.org/en/20/tutorial/engine.html
     https://docs.sqlalchemy.org/en/20/glossary.html#term-dialect
     https://docs.sqlalchemy.org/en/20/dialects/sqlite.html
@@ -61,8 +63,15 @@ def get_sqlite_engine(
 async def hello_sql(engine: async_sqla.AsyncEngine) -> None:
     """Performs `SELECT 'Hello, SQLAlchemy'` query.
 
-    ROLLBACK message at the end of the operation
-    means that the latter does no affect the DB.
+    The sole purpose of the Engine object from a user-facing perspective
+    is to provide a unit of connectivity to the database called the Connection.
+    When working with the Core directly,
+    the Connection object is how all interaction with the database is done.
+
+    The ROLLBACK message at the end of the operation
+    means that the latter does no affect/change the DB.
+    Any changes within the context manager are rolled back
+    unless they are commited explicitly.
 
     References
     ----------
@@ -72,16 +81,16 @@ async def hello_sql(engine: async_sqla.AsyncEngine) -> None:
     async with engine.connect() as conn:
         request: sqla.TextClause = sqla.text("SELECT 'Hello, SQLAlchemy!'")
         result: sqla.CursorResult = await conn.execute(statement=request)
-        print(f"Request: {request}")
-        print(f"Result: {result.fetchone()}")
+        print(f"Hello SQL Request: {request}")
+        print(f"Hello SQL Result: {result.fetchone()}")
 
 
 async def create_coords_table(engine: async_sqla.AsyncEngine) -> None:
-    """Creates the table Coords with (x, y) attributes.
+    """Creates the table Coords with (x, y) attributes/columns.
 
-    Then the Coords table is populated with some coordinates.
+    The Coords table is populated with values meaning 2D coordinates.
+    When this script is over, if in memory mode, all changes will disappear.
 
-    When this script is over, if in memory mode, all changes will gone.
 
     References
     ----------
@@ -107,8 +116,9 @@ async def create_coords_table(engine: async_sqla.AsyncEngine) -> None:
         # Saving the results
         await conn.commit()
     # the "begin" style -> no need for explicit commits
-    async with engine.begin() as conn:
-        await conn.execute(
+    # the connection is returned, but with transaction mode enabled
+    async with engine.begin() as transaction:
+        await transaction.execute(
             statement=sqla.text(ins_stmt),
             parameters=[
                 {"x": 100, "y": 200},
@@ -119,8 +129,8 @@ async def create_coords_table(engine: async_sqla.AsyncEngine) -> None:
         rows: sqla.CursorResult = await conn.execute(
             sqla.text(f"SELECT x, y FROM {tabname}")
         )
-        for row in rows:
-            print(f"(x: {row.x}, y: {row.y})")
+        for nth, row in enumerate(rows, 1):
+            print(f"Row{nth}: (x: {row.x}, y: {row.y})")
 
 
 async def main():
@@ -135,10 +145,14 @@ async def main():
 
     engine = get_sqlite_engine()
 
+    print("\nQuery 1")
     await hello_sql(engine)
+    print("\nQuery 2")
     await create_coords_table(engine)
 
     # it is mandatorily good to clean up resources
+    print("\nSo long")
+    await engine.dispose()
 
 
 if __name__ == "__main__":

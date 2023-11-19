@@ -27,7 +27,7 @@ Ok, no problem with that, thanks for the tip.
 
 ```shell
 ╰─➤  sudo apt install python3-venv
-[sudo] password for stankudrow: 
+[sudo] password for %user%: 
 Reading package lists... Done
 Building dependency tree... Done
 Reading state information... Done
@@ -108,7 +108,7 @@ Consider reading more about greenlets:
 
 - [greenlet: official docs](https://greenlet.readthedocs.io/en/latest/index.html)
 
-**A piece of advice**: if you know little or nothing about concurrency, you definitly need to master it. A good starter for concurrency in Python is [SuperFastPython](https://superfastpython.com/) in my humble opinion. Also it is good for you to have a well-grounded understanding of Python `asyncio` module, so these sources are helpful:
+**A piece of advice**: if you know little or nothing about concurrency, you definitly need to master it. In my humble opinion, a good starter for concurrency in Python is [SuperFastPython](https://superfastpython.com/) site. Also it is good for you to have a well-grounded understanding of Python `asyncio` module, so these sources are helpful:
 
 - [SuperFastPython: asyncio learning path](https://superfastpython.com/learning-paths/#Asyncio_Learning_Path)
 
@@ -116,27 +116,27 @@ Consider reading more about greenlets:
 
 More about installing SQLAlchemy in the [installation](https://docs.sqlalchemy.org/en/20/intro.html#installation) section.
 
-Another handy (pip-installable) packages:
+Other pip-installable packages to be used later:
 
 - [IPython](https://ipython.org/) - an enhanced interactive Python shell;
 
-- [Jupyter notebook](https://docs.jupyter.org/en/latest/index.html) - just try it out and behold the opportunities.
+- [Jupyter notebook](https://docs.jupyter.org/en/latest/index.html) - just try it out.
 
 ### SQLite
 
 [SQLite](https://www.sqlite.org/index.html) is a C-language library implementing SQL database engine.
 
-The Python programming language has [sqlite3](https://docs.python.org/3/library/sqlite3.html) standard library module, but it is not designed for asynchronous code. That is the reason for referring to the [aiosqlite](https://pypi.org/project/aiosqlite/) DB API package.
+The Python programming language has [sqlite3](https://docs.python.org/3/library/sqlite3.html) standard library module, but it is not designed for asynchronous code. That is the reason for referring to the [aiosqlite](https://pypi.org/project/aiosqlite/) database (DB) application programming interface (API) package.
 
-See more about SQLite in SQLAlchemy in the [official docs](https://docs.sqlalchemy.org/en/20/dialects/sqlite.html) details when you are ready.
+See more about SQLite in SQLAlchemy in the [official docs](https://docs.sqlalchemy.org/en/20/dialects/sqlite.html) details when you feel ready to do so.
 
 ### Hello, SQLAlchemy
 
-Consider running the [sqla_introduction.py](./sqla_introduction.py) script several times. It is full with comments, docstrings and the superfluous-like output. Consider referring to the [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/20/tutorial/dbapi_transactions.html) which is really helpful.
+Consider running the [sqla_introduction.py](./sqla_introduction.py) script several times. It is full with comments, docstrings and the superfluous-like output. Consider going along the [SQLAlchemy tutorial](https://docs.sqlalchemy.org/en/20/tutorial/dbapi_transactions.html) which was put in the basis of this note.
 
-The following tutorials will be in the form of Jupyter notebooks: all the notes, drawings, and most importantly the code et cetera will be within one document.
+The following tutorials will be in the form of Jupyter notebooks: texts, drawings, code and so forth can be gathered in one document.
 
-**Homework**: the script deals with in-memory database mode. What about saving a database in a file and loading data from it? Enjoy:)
+**Homework**: the script deals with in-memory database mode. What about saving a database in a file and loading data from it? Read more about SQLite, try the `sqlite3` standard library package as you don't need to write asynchronous code all the times.
 
 ### Helpful links
 
